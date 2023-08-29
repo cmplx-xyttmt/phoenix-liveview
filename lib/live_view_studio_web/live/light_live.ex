@@ -2,12 +2,14 @@ defmodule LiveViewStudioWeb.LightLive do
   use LiveViewStudioWeb, :live_view
 
   def mount(_oarams, _session, socket) do
+    IO.inspect(self(), label: "MOUNT")
     socket = assign(socket, brightness: 10)
     IO.inspect(socket)
     {:ok, socket}
   end
 
   def render(assigns) do
+    IO.inspect(self(), label: "RENDER")
     ~H"""
     <h1>Front Porch Light</h1>
     <div id="light">
@@ -36,17 +38,21 @@ defmodule LiveViewStudioWeb.LightLive do
   end
 
   def handle_event("on", _, socket) do
+    IO.inspect(self(), label: "ON")
+
     socket = assign(socket, brightness: 100)
 
     {:noreply, socket}
   end
 
   def handle_event("off", _, socket) do
+    IO.inspect(self(), label: "OFF")
     socket = assign(socket, brightness: 0)
     {:noreply, socket}
   end
 
   def handle_event("up", _, socket) do
+    IO.inspect(self(), label: "UP")
     brightness = socket.assigns.brightness
     socket = assign(socket, brightness: min(100, brightness + 10))
     {:noreply, socket}
